@@ -20,8 +20,22 @@ source $(brew --prefix nvm)/nvm.sh
 
 # Cooool functions
 function github() {
-  #call from a local repo to open the repository on github in browser
+  #call from a local repo to open the origin repository on github in browser
   giturl=$(git config --get remote.origin.url)
+  if [ "$giturl" == "" ]
+    then
+     echo "Not a git repository or no remote.origin.url set"
+     exit 1;
+  fi
+  giturl=${giturl/git\@github\.com\:/https://github.com/}
+  giturl=${giturl/\.git//}
+  echo $giturl
+  open $giturl
+}
+
+function githubog() {
+  #call from a local repo to open the upstream repository on github in browser
+  giturl=$(git config --get remote.upstream.url)
   if [ "$giturl" == "" ]
     then
      echo "Not a git repository or no remote.origin.url set"
